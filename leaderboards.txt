@@ -1,0 +1,6 @@
+ahanaf 100
+amir 200
+dihan 400
+apan 800
+singha 10
+shapin 200

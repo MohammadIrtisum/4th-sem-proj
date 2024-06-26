@@ -4,29 +4,36 @@ using namespace std;
 
 //for the button and field
 #include "ui.h"
-
+#include "graph.h"
+//#include "leaderboard.cpp"//leaderboard
 
 
 //Below are the functions that will run in the application
+//function age pore likhsi bole age theke ekhane define kore disi
 
 //easy() and easy2() are the games
+void graph_function();
 void Easy();
 void Easy2();
 //void loading();
 void scoreGame();
 void setTime();
 void about_us();//it is the about us page
+void leaderboard();//using leaderboard after declaring in the 527th line, so declaring it now, to find the leaderboard
+void run_leaderboard();
 void exit();
 void menu();
 void setTime();
 void game1_start();
 void game2_start();
 void game3_start();
+void game4_start();
 void Header();
 void Footer();
 void storeAcc(int x);
-void storeSpeed(int x);
+void storeSpeed(int x,char name[]);
 void storeAvg(int x);
+//void LeaderBoard();
 
 
 
@@ -132,6 +139,7 @@ void startPracticing(int lavel, int time_limit)
     int ccnt = 0, wcnt = 0;
     bool timeOverWarning = false;
     bool isStore = false;
+    int mx = 0;
 
     Footer();
 
@@ -163,11 +171,13 @@ void startPracticing(int lavel, int time_limit)
                 else if(lavel==2)Easy2();
                 return;
             }
-//            else if(stor.cursor() && !isStore)
+
+            if(spd>10)//if speed is more than store
             {
 
                //storeAcc(Ac);
-               storeSpeed(spd);
+              // storeSpeed(spd,name);
+               mx = spd;
                storeAvg((Ac+spd)/2);
                spd=0;
                Ac=0;
@@ -190,6 +200,8 @@ void startPracticing(int lavel, int time_limit)
 
             timeOverWarning = true;
             //timeOver(int I);
+            storeSpeed(Ac,name);//store word
+            Ac = 0;
         }
 
         if(ch == 9 && word.time_speent() <= time_limit)
@@ -214,22 +226,24 @@ void startPracticing(int lavel, int time_limit)
             new Field(350, 40, 480, 80, WHITE,RED, temp);
             int acc = (ccnt * 100) / (ccnt + wcnt);
 
-            Ac=acc;///add now
+            int vvvvv = ccnt / 60;
+
+            Ac=spd;///add now
 
             sprintf(temp, "%d", acc);
             strcat(temp, "%");
             new Field(480, 40, 650, 80, WHITE, BLACK, temp);
 
-            if(lavel == 1)
-            {
-                for (int c = 1; c <= 22760; c++)
-                {
-                    for(int d = 1; d <= 2276; d++)
-                    {
+            // if(lavel == 1)
+            // {
+            //     for (int c = 1; c <= 22760; c++)
+            //     {
+            //         for(int d = 1; d <= 2276; d++)
+            //         {
 
-                    }
-                }
-            }
+            //         }
+            //     }
+            // }
             strcpy(typed_word, "");
             settextstyle(4, 0, 3);
             rand_word  = words[rand() % length];
@@ -303,13 +317,9 @@ void game1_start()
         {
             if(easy.cursor()) Easy();
             else if(back.cursor())menu();
-
-
-
         }
     }
 }
-
 
 
 void Easy()
@@ -351,9 +361,8 @@ void about_us()
     settextstyle(8, 0, 1);
     new Field(15, 200, 785, 230, CYAN,WHITE ,"Team Members");
     new Field(15, 230, 785, 260, CYAN,WHITE ,"Team Leader: Ahanaf");
-    new Field(15, 260, 785, 290, CYAN,WHITE ,"Member 1: Evan");
-    new Field(15, 290, 785, 320, CYAN,WHITE ,"Member 2: Dihan");
-    new Field(15, 320, 785, 350, CYAN,WHITE ,"Member 3: Irtisum");
+    new Field(15, 260, 785, 290, CYAN,WHITE ,"Member 1: Apan");
+    new Field(15, 290, 785, 320, CYAN,WHITE ,"Member 2: Irtisum");
     settextstyle(8, 0, 2);
     Button back(15, 425, 130, 465, BLUE, "BACK");
     while(true)
@@ -369,6 +378,9 @@ void about_us()
 }
 
 
+
+
+
 void storeAcc(int x)
 {
     ofstream myfile;
@@ -377,14 +389,52 @@ void storeAcc(int x)
     myfile<<x<<" ";
     myfile.close();
 }
-void storeSpeed(int x)
+int mx = 0;
+void storeSpeed(int x, char chh[])
 {
-    ofstream myfile;
-    myfile.open("Previous RecordSpeed.txt", std::ios_base::app);
 
-    myfile<<x<<" ";
+    ofstream myfile;
+    myfile.open("RecordSpeed.txt", std::ios_base::app);
+
+    myfile<<chh<<" "<<x <<endl;
     myfile.close();
+
+//     //
+//     ifstream file_read;
+//     file_read.open("RecordSpeed.txt");
+//     vector<pair<string, int>> records;
+//     string line;
+//     while (getline(file_read, line)){
+//         istringstream iss(line);
+//         string sssss;
+//         int xxxxxxx;
+
+//         // Read string and integer from each line
+//         if (iss >> sssss >> xxxxxxx)
+//         {
+// //            records.emplace_back({sssss, xxxxxxx}); // Add pair (chh, x) to records vector
+//         }
+//         //records.push_back(line);
+//     }
+
+//     file_read.close();
+
+//     //update the higest one
+//     for(auto [xx,y]: records){
+//         if(y==chh && xx<x){
+//             xx = x;
+//         }
+//     }
+
+//     //update file
+//     ofstream myfile;
+//     myfile.open("RecordSpeed.txt", std::ios_base::app);
+//     for(auto [xx,y]: records){
+//         myfile<<xx<<" "<<y <<endl;
+//     }
+//     myfile.close();
 }
+
 void storeAvg(int x)
 {
    ofstream myfile;
@@ -393,7 +443,6 @@ void storeAvg(int x)
     myfile<<x<<" ";
     myfile.close();
 }
-
 
 
 //#######################################################################################
@@ -462,12 +511,263 @@ void game2_start()
         }
     }
 }
+void exit()
+{
+    setbkcolor(BLACK);
+    cleardevice();
+    frame();
+    Footer();
+    new Field(0, 0, 800, 40, MAGENTA,WHITE, "WHAT YOU WANT TO DO");
+    Button back(15, 425, 130, 465, BLUE, "BACK");
+    Button exit(650, 425, 785, 465, BLUE, "EXIT");
+    while(true)
+    {
+        back.hover(GREEN);
 
+        if(GetAsyncKeyState(VK_LBUTTON) & (0x8000 != 0))
+        {
+            if(back.cursor())menu();
+            else if(exit.cursor())closegraph();
+        }
+        if(kbhit()) getch();
+    }
+
+}
+void menu()
+{
+
+    setbkcolor(CYAN);
+    cleardevice();
+    settextstyle(6, 0, 4);
+    new Field(0, 0, 800, 70, GREEN,BLACK, "MAIN MENU");
+
+    Footer();
+
+    ////left,top,right,bottom
+
+     // First row buttons for games
+    //Button game1(50, 90, 300, 140, MAGENTA, "Game 1");
+    Button game1(125, 90, 395, 150, MAGENTA, "Game 1");
+    Button game2(405, 90, 675, 150, BLUE, "Game 2");
+    Button game3(125, 160, 395, 220, MAGENTA, "Game 3");
+    Button game4(405, 160, 675, 220, BLUE, "Game 4");
+
+    // sescond row buttons
+    Button leader(125, 230, 395, 290, MAGENTA, "LeaderBoard");
+    Button graph(405, 230, 675, 290, BLUE, "IIUC MAP");
+    Button aboutMe(125, 300, 675, 360, MAGENTA, "About Us");
+    //Button ext(425, 300, 675, 360, BLUE, "Exit");
+
+    Button ext(125, 370, 675, 430, RED, "Exit");
+    //Button ext(50, 370, 600, 430, RED, "Exit");
+    // Button game1(50, 95, 250, 165, MAGENTA, "Game 1");
+    // Button game2(300, 95, 500, 165, BLUE, "Game 2");
+
+    // Button game3(50, 170, 250, 240, MAGENTA, "Game 3");
+    // Button leader(300, 170, 500, 240, BLUE, "LeaderBoard");
+
+    // Button aboutMe(50, 245, 250, 315, BLUE, "About Us");
+    // Button ext(300, 245, 500, 315, RED, "EXIT");
+    // Button game1(200, 95, 400, 165, MAGENTA, "  Game 1");
+    // Button game3(200, 95, 450, 165, MAGENTA, "  Game 3");
+    // //Button aboutMe(200, 175, 600, 245, BLUE, "  Game 2");
+    // Button game2(200, 170, 600, 240, BLUE, "Game 2");
+    // //Button game3(200, 205, 600, 265, BLUE, "Game 1(Hard)");
+    // //Button game4(200, 270, 600, 330, BLUE, "Game 2(Hard)");
+    // Button leader(200, 245, 600, 315, BLUE, "  LeaderBoard");
+    // //Button preb(200, 250, 600, 320, BLUE, "PREVIOUS RECORDs");
+    // Button aboutMe(200, 320, 600, 390, BLUE, "  About Us");
+    // //Button preb(200, 250, 600, 320, BLUE, "PREVIOUS RECORDs");
+    // Button ext(200, 395, 600, 465, RED, "  EXIT");
+
+    while(true)
+    {
+        //hovering over menu
+        game1.hover(GREEN);
+        game2.hover(GREEN);
+        game3.hover(GREEN);
+        game4.hover(GREEN);
+        leader.hover(GREEN);
+        aboutMe.hover(GREEN);
+        graph.hover(GREEN);
+        //newsfeed.hover(GREEN);
+        ext.hover(GREEN);
+
+        //pressing the windows
+        if(GetAsyncKeyState(VK_LBUTTON) & (0x8000 != 0))
+        {
+            if(game1.cursor()) game1_start();
+            else if(game2.cursor())game2_start();
+            else if(game3.cursor())game3_start();
+            else if(game4.cursor())game4_start();
+            //else if(newsfeed.cursor()) leaderboard();
+            else if(leader.cursor()) leaderboard();
+            else if(graph.cursor()) {graph_function();}
+            else if(aboutMe.cursor()) about_us();
+           else if(ext.cursor()) exit();
+        }
+    }
+}
+
+
+void login()
+{
+
+    setbkcolor(LIGHTCYAN);
+    cleardevice();
+
+    settextstyle(6, 0, 4);
+    new Field(0,0,800,80,BLACK,WHITE,"WELCOME TO TYPING GAME");//left,top,right,bottom
+    settextstyle(8, 0, 2);//void settextstyle(int font, int direction, int font_size);
+    new Field(100, 350, 350, 400, GREEN,WHITE, "ENTER YOUR NAME");//left,top,right,bottom
+    Input userName;//creating input object from the ui.h
+    userName.Name(350, 350,700, 400);//left,top,right,bottom
+    Button submit(370,430,450,480, BLUE, "OK");
+
+    while(true)
+    {
+        int tr=0;
+        submit.hover(GREEN);
+        if(GetAsyncKeyState(VK_LBUTTON) & (0x8000 != 0))
+        {
+            if(userName.cursor()){ userName.getName(name); tr=1; }
+            else if(submit.cursor())
+            {
+                if(strlen(name)>0){
+                    //name[0]
+                    menu();
+                }
+            }
+
+        }
+    }
+
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------
+//addition
+//leaderboard
+void leaderboard()
+{
+    setbkcolor(DARKGRAY);
+    cleardevice();
+    //frame();
+    Footer();
+    // settextstyle(6, 0, 4);
+    // new Field(0, 0, 800, 70, GREEN,BLACK,"Leaderboard");
+    // settextstyle(8, 0, 1);
+
+    run_leaderboard();
+
+    // settextstyle(8, 0, 2);
+    Button back(15, 425, 130, 465, BLUE, "BACK");
+    while(true)
+    {
+        back.hover(GREEN);
+
+        if(GetAsyncKeyState(VK_LBUTTON) & (0x8000 != 0))
+        {
+            if(back.cursor())menu();
+        }
+        if(kbhit()) getch();
+    }
+}
+
+
+
+//sort the leaderboard data
+void bubbleSort(int scores[], string names[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (scores[j] < scores[j + 1]) {
+                swap(scores[j], scores[j + 1]);
+                swap(names[j], names[j + 1]);
+            }
+        }
+    }
+}
+
+// Function to print the leaderboard
+void printLeaderboard(const int scores[], const string names[], int size) {
+    //cout << "Leaderboard:\n";
+    // new Field(15, 200, 785, 230, CYAN,WHITE ,"Team Members");
+    // new Field(15, 230, 785, 260, CYAN,WHITE ,"Team Leader: Ahanaf");
+    // new Field(15, 260, 785, 290, CYAN,WHITE ,"Member 1: Apan");
+    outtextxy(150,10,"Name");
+    outtextxy(350,10,"Score");
+
+    int v = 30;
+    for (int i = 0,v=0,v1=0; i < size; i++,v+=30,v1+=50) {
+        char* name = const_cast<char*>(names[i].c_str());
+
+        string score_str = to_string(scores[i]);
+        const char* score_cstr = score_str.c_str(); // const char*
+        char* score = const_cast<char*>(score_cstr); // cast to char*
+        //l,t,r,b
+       // new Field(10, 50+v1, 785, 100, CYAN,WHITE ,score);
+       setcolor(YELLOW);
+        outtextxy(150,v+50,name);
+        outtextxy(350,v+50,score);
+        delay(1000);
+        v+=20;
+       // cout << names[i] << "\t" << scores[i] << "\n";
+    }
+
+    Button back(15, 425, 130, 465, BLUE, "BACK");
+}
+
+
+void run_leaderboard() {
+    const int MAX_SIZE = 100; // Maximum number of entries
+    string names[MAX_SIZE];
+    int scores[MAX_SIZE];
+    int numEntries = 0;
+
+    // Read data from the file
+    ifstream inFile("leaderboards.txt");
+    if (!inFile) {
+        cerr << "Error: Unable to open file.\n";
+        //return 1;
+    }
+
+    while (numEntries < MAX_SIZE && inFile >> names[numEntries] >> scores[numEntries]) {
+        numEntries++;
+    }
+    inFile.close();
+
+    // Sort the leaderboard data
+    bubbleSort(scores, names, numEntries);
+
+    // Print the leaderboard
+    printLeaderboard(scores, names, numEntries);
+
+    //return 0;
+}
+
+
+
+//leaderboard finishes
+//------------------------------------------------------------------------------
+
+
+//#############################################################################################
+//Graph
+
+//see graph.h file
+
+
+
+
+//#############################################################################################
+//Game 3
 using namespace chrono;
 
 const vector<string> sentences = {
     "The quick brown fox jumps over the lazy dog.",
-    "A journey of a thousand miles begins with a single step.",
+    "A journey begins with a single step.",
     "To be or not to be, that is the question.",
     "All that glitters is not gold.",
     "A picture is worth a thousand words."
@@ -499,7 +799,7 @@ void game3_start(){
     setcolor(BLACK);
 
     displayText("Typing Speed Test", 200, 50, BLUE);
-    displayText("You have 60 seconds to type the following sentence as accurately as possible.", 50, 100, BLACK);
+    displayText("You have 60 seconds to type the following sentence", 50, 100, BLACK);
 
     string sentence = getRandomSentence();
     displayText("Sentence:", 50, 150, BLACK);
@@ -576,104 +876,138 @@ void game3_start(){
 //    return ;
 }
 
+//#############################################################################################
+//Game 4
 
-void exit()
+#define MAX_WORDS 10
+#define MAX_WORD_LENGTH 40
+#define MAX_LIVES 2
+
+
+const char *words[MAX_WORDS] =
 {
-    setbkcolor(BLACK);
-    cleardevice();
-    frame();
-    Footer();
-    new Field(0, 0, 800, 40, MAGENTA,WHITE, "WHAT YOU WANT TO DO");
-    Button back(15, 425, 130, 465, BLUE, "BACK");
-    Button exit(650, 425, 785, 465, BLUE, "EXIT");
-    while(true)
-    {
-        back.hover(GREEN);
+    "Computer Science & Engineering", "banana", "cherry", "date", "strawberry",
+    "fig", "grape", "mango", "kiwi", "lemon"
+};
 
-        if(GetAsyncKeyState(VK_LBUTTON) & (0x8000 != 0))
-        {
-            if(back.cursor())menu();
-            else if(exit.cursor())closegraph();
-        }
-        if(kbhit()) getch();
-    }
+char currentWord[MAX_WORD_LENGTH];
+char userInput[MAX_WORD_LENGTH];
+int score = 0;
+int lives = MAX_LIVES;
+int wordX, wordY;
+time_t startTime;
 
-}
-void menu()
+void getRandomWord()
 {
-
-    setbkcolor(CYAN);
-    cleardevice();
-    settextstyle(6, 0, 4);
-    new Field(0, 0, 800, 70, GREEN,BLACK, "MAIN MENU");
-
-    Footer();
-
-    ////left,top,right,bottom
-    Button game1(200, 95, 600, 165, BLUE, "  Game 1");
-    //Button aboutMe(200, 175, 600, 245, BLUE, "  Game 2");
-    Button game2(200, 170, 600, 240, BLUE, "Game 2");
-    //Button game3(200, 205, 600, 265, BLUE, "Game 1(Hard)");
-    //Button game4(200, 270, 600, 330, BLUE, "Game 2(Hard)");
-    Button game3(200, 245, 600, 315, BLUE, "Game 3");
-    //Button preb(200, 250, 600, 320, BLUE, "PREVIOUS RECORDs");
-    Button aboutMe(200, 320, 600, 390, MAGENTA, "  About Us");
-    Button ext(200, 395, 600, 465, RED, "  EXIT");
-
-    while(true)
-    {
-        //hovering over menu
-        game1.hover(GREEN);
-        game2.hover(GREEN);
-        game3.hover(GREEN);
-        aboutMe.hover(GREEN);
-        ext.hover(GREEN);
-
-        //pressing the windows
-        if(GetAsyncKeyState(VK_LBUTTON) & (0x8000 != 0))
-        {
-            if(game1.cursor()) game1_start();
-            else if(game2.cursor())game2_start();
-            else if(game3.cursor())game3_start();
-            else if(aboutMe.cursor()) about_us();
-            else if(ext.cursor()) exit();
-
-
-        }
-    }
+    int index = rand() % MAX_WORDS;
+    strcpy(currentWord, words[index]);
+    wordX = rand() % (getmaxx() - strlen(currentWord) * 8);
+    wordY = 0;  // Start from the top of the screen
 }
 
-
-
-
-
-void login()
+void displays( char *text, int x, int y, int color, int font, int direction, int size)
 {
+    setcolor(color);
+    settextstyle(font, direction, size);
+    outtextxy(x, y, text);
+}
 
-    setbkcolor(LIGHTCYAN);
+void updateDisplay()
+{
     cleardevice();
+    char scoreText[20];
+    sprintf(scoreText, "Score: %d", score);
+    displays(scoreText, 10, 10, WHITE, DEFAULT_FONT, HORIZ_DIR, 2);
 
-    settextstyle(6, 0, 4);
-    new Field(0,0,800,80,BLACK,WHITE,"WELCOME TO TYPING GAME");//left,top,right,bottom
-    settextstyle(8, 0, 2);//void settextstyle(int font, int direction, int font_size);
-    new Field(100, 350, 350, 400, GREEN,WHITE, "ENTER YOUR NAME");//left,top,right,bottom
-    Input userName;//creating input object from the ui.h
-    userName.Name(350, 350,700, 400);//left,top,right,bottom
-    Button submit(370,430,450,480, BLUE, "OK");
+    char livesText[20];
+    sprintf(livesText, "Lives: %d", lives);
+    displays(livesText, getmaxx() - 150, 10, WHITE, DEFAULT_FONT, HORIZ_DIR, 2);
 
-    while(true)
+    displays(currentWord, wordX, wordY, YELLOW, TRIPLEX_FONT, HORIZ_DIR, 3);
+    displays(userInput, 10, getmaxy() - 50, GREEN, TRIPLEX_FONT, HORIZ_DIR, 2);
+}
+void game4_start()
+{
+    //setbkcolor(YELLOW);
+    cleardevice();
+    //int gd = DETECT, gm;
+    //initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    srand(time(NULL));
+    getRandomWord();
+    userInput[0] = '\0';
+    startTime = time(NULL);
+
+    while (lives > 0)
     {
-        int tr=0;
-        submit.hover(GREEN);
-        if(GetAsyncKeyState(VK_LBUTTON) & (0x8000 != 0))
+        updateDisplay();
+
+        if (kbhit())
         {
-            if(userName.cursor()){ userName.getName(name); tr=1; }
-            else if(submit.cursor())
+            char ch = getch();
+            if (ch == '\r')    // Enter key
             {
-                if(strlen(name)>0)menu();
+                if (strcmp(userInput, currentWord) == 0)
+                {
+                    score += 10;
+                    getRandomWord();
+                }
+                else
+                {
+                    lives--;
+                }
+                userInput[0] = '\0';
             }
+            else if (ch == '\b')      // Backspace key
+            {
+                int len = strlen(userInput);
+                if (len > 0)
+                {
+                    userInput[len - 1] = '\0';
+                }
+            }
+            else if (ch >= ' ' && ch <= '~')     // Ensure valid ASCII input
+            {
+                int len = strlen(userInput);
+                if (len < MAX_WORD_LENGTH - 1)   // Ensure there's room for the new character
+                {
+                    userInput[len] = ch;
+                    userInput[len + 1] = '\0';
+                }
+            }
+        }
 
+        wordY += 5;
+        if (wordY > getmaxy())
+        {
+            lives--;
+            getRandomWord();
+        }
+
+        delay(200);
+    }
+
+    cleardevice();
+    char endText[50];
+    sprintf(endText, "Game Over! Final Score: %d", score);
+    displays(endText, getmaxx() / 2 - strlen(endText) * 8, getmaxy() / 2, WHITE, TRIPLEX_FONT, HORIZ_DIR, 3);
+    Button back(15, 425, 130, 465, BLUE, "BACK");
+    while(true)
+    {
+       // easy.hover(GREEN);
+        //hard.hover(GREEN);
+        back.hover(GREEN);
+        if(GetAsyncKeyState(VK_LBUTTON) & (0x8000 != 0))
+        {
+            //if(easy.cursor()) Easy2();
+            //else if(hard.cursor())Hard();
+            if(back.cursor())menu();
         }
     }
 
+    //getch();
+
+    //closegraph();
+//return 0;
 }
+

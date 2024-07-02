@@ -1010,4 +1010,3 @@ void game4_start()
     //closegraph();
 //return 0;
 }
-
